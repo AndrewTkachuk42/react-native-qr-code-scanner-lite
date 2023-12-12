@@ -55,7 +55,7 @@ export const QrCodeScanner = ({
 );
 
 export const useQrScanner = () => {
-  const ref = useRef(null);
+  const scannerRef = useRef(null);
   const viewId = useRef<number | null>(null);
 
   const sendCommand = useCallback(
@@ -82,10 +82,10 @@ export const useQrScanner = () => {
   );
 
   useEffect(() => {
-    viewId.current = findNodeHandle(ref.current);
+    viewId.current = findNodeHandle(scannerRef.current);
 
     createFragment();
   }, [createFragment]);
 
-  return { ref, resumeScan, pauseScan };
+  return { scannerRef, resumeScan, pauseScan };
 };

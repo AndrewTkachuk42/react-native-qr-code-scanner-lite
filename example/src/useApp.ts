@@ -5,7 +5,7 @@ export const useApp = () => {
   const [qrData, setQrData] = useState(null);
   const [error, setError] = useState(null);
 
-  const { ref: scannerRef, resumeScan } = useQrScanner();
+  const { scannerRef, resumeScan } = useQrScanner();
 
   const onQrCodeScanned = useCallback(({ nativeEvent }) => {
     setQrData(nativeEvent?.data);
