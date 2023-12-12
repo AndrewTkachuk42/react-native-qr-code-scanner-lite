@@ -1,12 +1,26 @@
-import * as React from 'react';
+import React from 'react';
 
-import { StyleSheet, View } from 'react-native';
-import { QrCodeScannerLiteView } from 'react-native-qr-code-scanner-lite';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { QrCodeScanner } from 'react-native-qr-code-scanner-lite';
+import { useApp } from './useApp';
+
+const buttonTitle = 'resume scan';
 
 export default function App() {
+  const { scannerRef, qrData, error, onQrCodeScanned, onError, resume } =
+    useApp();
+
   return (
     <View style={styles.container}>
-      <QrCodeScannerLiteView color="#32a852" style={styles.box} />
+      <QrCodeScanner
+        scannerRef={scannerRef}
+        onQrCodeScanned={onQrCodeScanned}
+        onError={onError}
+      />
+
+      <Button title={buttonTitle} onPress={resume} />
+      <Text>{qrData}</Text>
+      <Text>{error}</Text>
     </View>
   );
 }
@@ -14,12 +28,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });
