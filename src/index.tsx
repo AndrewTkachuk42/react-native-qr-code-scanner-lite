@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import type { HostComponent } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import {
   requireNativeComponent,
   Platform,
@@ -6,9 +8,11 @@ import {
   Dimensions,
   UIManager,
   type ViewProps,
+  NativeModules,
 } from 'react-native';
 
 const { width: windowWidth } = Dimensions.get('window');
+const isAndroid = Platform.OS === 'android';
 
 const LINKING_ERROR =
   `The package 'react-native-qr-code-scanner-lite' doesn't seem to be linked. Make sure: \n\n` +
@@ -16,40 +20,55 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const ComponentName = 'QrCodeScannerLiteViewManager';
+type QrCodeScannerLiteNativeProps = {
+  onQrCodeScanned: (args: any) => any;
+  onError: (args: any) => any;
+  width?: number;
+  height?: number;
+  style?: StyleProp<ViewStyle>;
+};
 
-const QrCodeScannerLiteViewManager = requireNativeComponent(ComponentName);
+type QrCodeScannerLiteProps = QrCodeScannerLiteNativeProps &
+  ViewProps & { scannerRef: React.MutableRefObject<null> };
 
-export enum COMMAND {
+type QrCodeScannerLiteViewType = HostComponent<QrCodeScannerLiteNativeProps>;
+
+const getNativeView = (): QrCodeScannerLiteViewType => {
+  const ComponentName = isAndroid
+    ? 'QrCodeScannerLiteViewManager'
+    : 'QrCodeScannerLiteView';
+
+  const nativeComponent =
+    requireNativeComponent<QrCodeScannerLiteNativeProps>(ComponentName);
+
+  if (!nativeComponent) {
+    throw new Error(LINKING_ERROR);
+  }
+
+  return nativeComponent;
+};
+
+const QrCodeScannerLiteView = getNativeView();
+
+enum COMMAND {
   create = '0',
   resume = '1',
   pause = '2',
 }
 
-if (!QrCodeScannerLiteViewManager) {
-  throw new Error(LINKING_ERROR);
-}
-
-type QrCodeScannerLiteProps = ViewProps & {
-  onQrCodeScanned: (args: any) => any;
-  onError: (args: any) => any;
-  scannerRef: React.MutableRefObject<null>;
-  width?: number;
-  height?: number;
+const defaultStyle = {
+  width: windowWidth,
+  height: windowWidth,
 };
 
 export const QrCodeScanner = ({
   scannerRef,
-  width = windowWidth,
-  height = windowWidth,
+  style,
   ...props
 }: QrCodeScannerLiteProps) => (
-  <QrCodeScannerLiteViewManager
+  <QrCodeScannerLiteView
     ref={scannerRef}
-    style={{
-      width,
-      height,
-    }}
+    style={[defaultStyle, style]}
     {...props}
   />
 );
@@ -71,17 +90,29 @@ export const useQrScanner = () => {
     [sendCommand]
   );
 
-  const resumeScan = useCallback(
-    () => sendCommand(COMMAND.resume),
-    [sendCommand]
-  );
+  const resumeScan = useCallback(() => {
+    if (isAndroid) {
+      sendCommand(COMMAND.resume);
+      return;
+    }
 
-  const pauseScan = useCallback(
-    () => sendCommand(COMMAND.pause),
-    [sendCommand]
-  );
+    NativeModules.QrCodeScannerLiteViewManager.resume();
+  }, [sendCommand]);
+
+  const pauseScan = useCallback(() => {
+    if (isAndroid) {
+      sendCommand(COMMAND.pause);
+      return;
+    }
+
+    NativeModules.QrCodeScannerLiteViewManager.pause();
+  }, [sendCommand]);
 
   useEffect(() => {
+    if (Platform.OS === 'ios') {
+      return;
+    }
+
     viewId.current = findNodeHandle(scannerRef.current);
 
     createFragment();
