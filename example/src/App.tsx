@@ -4,29 +4,63 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { QrCodeScanner } from 'react-native-qr-code-scanner-lite';
 import { useApp } from './useApp';
 
-const buttonTitle = 'resume scan';
+const BUTTON_TITLE = {
+  resume: 'resume scan',
+  pause: 'pause scan',
+};
 
 export default function App() {
-  const { scannerRef, qrData, error, onQrCodeScanned, onError, resume } =
+  const { scannerRef, qrData, error, onQrCodeScanned, onError, resume, pause } =
     useApp();
 
   return (
     <View style={styles.container}>
-      <QrCodeScanner
-        scannerRef={scannerRef}
-        onQrCodeScanned={onQrCodeScanned}
-        onError={onError}
-      />
+      <View>
+        <QrCodeScanner
+          scannerRef={scannerRef}
+          onQrCodeScanned={onQrCodeScanned}
+          onError={onError}
+        />
+        <View style={styles.valueWrapper}>
+          <Text style={styles.value}>{qrData}</Text>
+        </View>
+      </View>
 
-      <Button title={buttonTitle} onPress={resume} />
-      <Text>{qrData}</Text>
-      <Text>{error}</Text>
+      <View style={styles.buttonWrapper}>
+        <Button title={BUTTON_TITLE.resume} onPress={resume} />
+        <Button title={BUTTON_TITLE.pause} onPress={pause} />
+      </View>
+
+      <Text style={styles.error}>{error}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#fff',
     flex: 1,
+  },
+  valueWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#0000004D',
+  },
+  value: {
+    color: '#fff',
+    fontSize: 24,
+  },
+  buttonWrapper: {
+    padding: 16,
+    gap: 8,
+  },
+  error: {
+    fontSize: 24,
+    padding: 16,
+    color: 'red',
   },
 });
