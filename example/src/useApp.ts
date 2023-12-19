@@ -15,17 +15,20 @@ export const useApp = () => {
     setError(nativeEvent?.message);
   }, []);
 
-  const resume = useCallback(() => {
+  const resetState = useCallback(() => {
     setQrData(null);
     setError(null);
+  }, []);
+
+  const resume = useCallback(() => {
+    resetState();
     resumeScan();
-  }, [resumeScan]);
+  }, [resumeScan, resetState]);
 
   const pause = useCallback(() => {
-    setQrData(null);
-    setError(null);
+    resetState();
     pauseScan();
-  }, [pauseScan]);
+  }, [pauseScan, resetState]);
 
   return {
     scannerRef,
