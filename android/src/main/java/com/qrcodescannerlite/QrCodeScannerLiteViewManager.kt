@@ -71,8 +71,13 @@ class QrCodeScannerLiteViewManager(
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
     val density = reactContext.resources.displayMetrics.density
-    if (index == 0) propWidth = (value * density).roundToInt()
-    if (index == 1) propHeight = (value * density).roundToInt()
+
+    fun pixelsToDpi(pixels: Int): Int {
+      return (pixels * density).roundToInt()
+    }
+
+    if (index == 0) propWidth = pixelsToDpi(value)
+    if (index == 1) propHeight = pixelsToDpi(value)
   }
 
 

@@ -5,6 +5,18 @@ import { QrCodeScanner } from 'react-native-qr-code-scanner-lite';
 import { useApp } from './useApp';
 import Buttons from './Buttons';
 
+const QrData = ({ qrData }: { qrData: string | null }) => {
+  if (!qrData) {
+    return null;
+  }
+
+  return (
+    <View style={styles.qrDataWrapper}>
+      <Text style={styles.qrData}>{qrData}</Text>
+    </View>
+  );
+};
+
 export default function App() {
   const { scannerRef, qrData, error, onQrCodeScanned, onError, resume, pause } =
     useApp();
@@ -17,9 +29,7 @@ export default function App() {
           onQrCodeScanned={onQrCodeScanned}
           onError={onError}
         />
-        <View style={styles.qrDataWrapper}>
-          <Text style={styles.qrData}>{qrData}</Text>
-        </View>
+        <QrData qrData={qrData} />
       </View>
 
       <Buttons resume={resume} pause={pause} />
