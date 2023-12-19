@@ -13,29 +13,29 @@ npm install react-native-qr-code-scanner-lite
 ```js
 import { QrCodeScanner, useQrScanner } from "react-native-qr-code-scanner-lite";
 
-const { scannerRef, resumeScan, pauseScan } = useQrScanner();
+const App = () => {
+  const { scannerRef, resumeScan, pauseScan } = useQrScanner();
 
-const onQrCodeScanned = useCallback(({ nativeEvent }) => {
+  const onQrCodeScanned = useCallback(({ nativeEvent }) => {
     // Do something with qr code data
   }, []);
 
-const onError = useCallback(({ nativeEvent }) => {
-  // Handle error
-}, []);
+  const onError = useCallback(({ nativeEvent }) => {
+    // Handle error
+  }, []);
 
-// ...
-
-return (
-    <View>
-      <QrCodeScanner
-        scannerRef={scannerRef}
-        onQrCodeScanned={onQrCodeScanned}
-        onError={onError}
-      />
-      <Button title={'resume'} onPress={resumeScan} />
-      <Button title={'pause'} onPress={pauseScan} />
-    </View>
+  return (
+      <View>
+        <QrCodeScanner
+          scannerRef={scannerRef}
+          onQrCodeScanned={onQrCodeScanned}
+          onError={onError}
+        />
+        <Button title={'resume'} onPress={resumeScan} />
+        <Button title={'pause'} onPress={pauseScan} />
+      </View>
   );
+};
 ```
 
 ## Contributing
