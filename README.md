@@ -1,12 +1,53 @@
 # react-native-qr-code-scanner-lite
 
-QR code scanner
+Simple QR code scanner.
+If you only use camera in your project to scan QR codes, this package probably suits you well.
+There is no need to install any additional packages, like huge camera libraries.
 
 ## Installation
 
 ```sh
 npm install react-native-qr-code-scanner-lite
 ```
+
+### Android
+
+1. Add camera permission to your `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <!-- Add this -->
+
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false" />
+  <uses-permission android:name="android.permission.CAMERA" />
+
+  <!-- … -->
+
+</manifest>
+```
+
+### Ios
+
+1. Add camera usage description to info.plist file:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>This app uses camera to scan qr codes.</string>
+```
+
+2. Install pods by running "pod install" in ./ios directory
+
+```sh
+cd ios && pod install
+```
+
+### Requset camera permission
+
+1. Camera permission is a runtime permission. So you need to ask a user for a permission to use camera. This package won't work without a permission.
+You can use [react-native-permissions](https://github.com/zoontek/react-native-permissions). Also, you can add permission manually, in your phone settings, after the app is installed.
 
 ## Usage
 
