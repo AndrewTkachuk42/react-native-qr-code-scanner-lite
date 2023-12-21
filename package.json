@@ -1,6 +1,6 @@
 {
   "name": "react-native-qr-code-scanner-lite",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "QR code scanner",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -37,7 +37,13 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "qr",
+    "code",
+    "QRCode",
+    "scanner",
+    "reader",
+    "camera"
   ],
   "repository": {
     "type": "git",
