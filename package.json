@@ -37,7 +37,13 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "qr",
+    "code",
+    "QRCode",
+    "scanner",
+    "reader",
+    "camera"
   ],
   "repository": {
     "type": "git",
