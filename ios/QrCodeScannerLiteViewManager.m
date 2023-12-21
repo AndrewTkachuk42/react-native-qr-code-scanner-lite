@@ -4,6 +4,12 @@
 
 RCT_EXTERN_METHOD(resume)
 RCT_EXTERN_METHOD(pause)
+RCT_EXTERN_METHOD(checkPermission:
+                  (RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(requestPermission:
+                  (RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXPORT_VIEW_PROPERTY(onQrCodeScanned, RCTDirectEventBlock)
 

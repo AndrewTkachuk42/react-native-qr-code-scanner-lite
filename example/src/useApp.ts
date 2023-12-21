@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
-import { useQrScanner } from 'react-native-qr-code-scanner-lite';
+import { useQrCodeScanner } from 'react-native-qr-code-scanner-lite';
 
 export const useApp = () => {
   const [qrData, setQrData] = useState(null);
   const [error, setError] = useState(null);
 
-  const { scannerRef, resumeScan, pauseScan } = useQrScanner();
+  const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
   const onQrCodeScanned = useCallback(({ nativeEvent }) => {
     setQrData(nativeEvent?.data);

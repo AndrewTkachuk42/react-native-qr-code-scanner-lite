@@ -46,8 +46,23 @@ cd ios && pod install
 
 ### Requset camera permission
 
-1. Camera permission is a runtime permission. So you need to ask a user for a permission to use camera. This package won't work without a permission.
-You can use [react-native-permissions](https://github.com/zoontek/react-native-permissions). Also, you can add permission manually, in your phone settings, after the app is installed.
+Camera permission is a runtime permission. So you need to ask a user for a permission to use camera. This package won't work without a permission.
+
+you can import permission related utilities from useQrCodeScanner hook.
+
+```js
+import { useQrCodeScanner } from "react-native-qr-code-scanner-lite";
+
+const App = () => {
+
+  <!-- … -->
+
+  const { isGranted, checkPermission, requestPermission } = useQrCodeScanner();
+
+  <!-- … -->
+
+};
+```
 
 ## Usage
 
@@ -55,7 +70,7 @@ You can use [react-native-permissions](https://github.com/zoontek/react-native-p
 import { QrCodeScanner, useQrScanner } from "react-native-qr-code-scanner-lite";
 
 const App = () => {
-  const { scannerRef, resumeScan, pauseScan } = useQrScanner();
+  const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
   const onQrCodeScanned = useCallback(({ nativeEvent }) => {
     // Do something with qr code data

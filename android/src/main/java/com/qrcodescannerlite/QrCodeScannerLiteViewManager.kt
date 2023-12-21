@@ -58,7 +58,6 @@ class QrCodeScannerLiteViewManager(
     args: ReadableArray?
   ) {
     super.receiveCommand(root, commandId, args)
-    Log.d("test", "cmd: $commandId")
     val reactNativeViewId = requireNotNull(args).getInt(0)
 
     when (commandId.toInt()) {
