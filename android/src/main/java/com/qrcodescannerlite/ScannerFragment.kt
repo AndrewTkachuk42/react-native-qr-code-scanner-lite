@@ -62,24 +62,6 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
     start()
   }
 
-  override fun onPause() {
-    super.onPause()
-    // do any logic that should happen in an `onPause` method
-    // e.g.: customView.onPause();
-  }
-
-  override fun onResume() {
-    super.onResume()
-    // do any logic that should happen in an `onResume` method
-    // e.g.: customView.onResume();
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    // do any logic that should happen in an `onDestroy` method
-    // e.g.: customView.onDestroy();
-  }
-
   private fun start() {
     initCamera()
     buildInputAnalyser()
@@ -142,7 +124,6 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
 
   private fun onBarcodeScanned(barcode: Barcode) {
     events.sendQrCodeScanned(prepareBarcodeData(barcode))
-    unbindCamera()
   }
 
   private fun prepareBarcodeData(barcode: Barcode): WritableMap {

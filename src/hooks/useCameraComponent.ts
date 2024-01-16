@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { findNodeHandle, NativeModules, UIManager } from 'react-native';
 import { COMMAND, IS_ANDROID } from '../constants/constants';
+import { COMPONENT_IS_NOT_MOUNTED } from '../constants/strings';
 
-export const useNativeComponent = () => {
+export const useCameraComponent = () => {
   const scannerRef = useRef(null);
   const viewId = useRef<number | null>(null);
 
@@ -43,6 +44,10 @@ export const useNativeComponent = () => {
     }
 
     viewId.current = findNodeHandle(scannerRef.current);
+
+    if (!viewId.current) {
+      throw new Error(COMPONENT_IS_NOT_MOUNTED);
+    }
 
     createFragment();
   }, [createFragment]);

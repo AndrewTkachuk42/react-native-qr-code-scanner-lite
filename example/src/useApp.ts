@@ -1,11 +1,15 @@
 import { useState, useCallback } from 'react';
-import { useQrCodeScanner } from 'react-native-qr-code-scanner-lite';
+import {
+  useCameraPermission,
+  useCameraComponent,
+} from 'react-native-qr-code-scanner-lite';
 
 export const useApp = () => {
+  useCameraPermission();
+  const { scannerRef, resumeScan, pauseScan } = useCameraComponent();
+
   const [qrData, setQrData] = useState(null);
   const [error, setError] = useState(null);
-
-  const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
   const onQrCodeScanned = useCallback(({ nativeEvent }) => {
     setQrData(nativeEvent?.data);
