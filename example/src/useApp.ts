@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 import {
   useCameraPermission,
-  useCameraComponent,
+  useQrCodeScanner,
 } from 'react-native-qr-code-scanner-lite';
 
 export const useApp = () => {
   useCameraPermission();
-  const { scannerRef, resumeScan, pauseScan } = useCameraComponent();
+  const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
   const [qrData, setQrData] = useState(null);
   const [error, setError] = useState(null);
