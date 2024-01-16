@@ -1,7 +1,6 @@
 // replace with your package
 package com.qrcodescannerlite
 
-import android.util.Log
 import android.view.Choreographer
 import android.view.View
 import android.view.ViewGroup
@@ -83,7 +82,7 @@ class QrCodeScannerLiteViewManager(
   /**
    * Replace your React Native view with a custom fragment
    */
-  fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
+  private fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
     val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
     setupLayout(parentView)
 
@@ -95,7 +94,7 @@ class QrCodeScannerLiteViewManager(
       .commit()
   }
 
-  fun setupLayout(view: View) {
+  private fun setupLayout(view: View) {
     Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
       override fun doFrame(frameTimeNanos: Long) {
         manuallyLayoutChildren(view)
