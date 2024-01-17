@@ -1,9 +1,11 @@
 // replace with your package
 package com.qrcodescannerlite
 
+import android.graphics.Outline
 import android.view.Choreographer
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.facebook.react.bridge.ReactApplicationContext
@@ -11,7 +13,8 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactPropGroup
-import kotlin.math.roundToInt
+import kotlin.math.ceil
+
 
 class QrCodeScannerLiteViewManager(
   private val reactContext: ReactApplicationContext
@@ -66,16 +69,28 @@ class QrCodeScannerLiteViewManager(
     }
   }
 
-  @ReactPropGroup(names = ["width", "height"], customType = "Style")
+  private class OutlineProvider(private val radius: Int) : ViewOutlineProvider() {
+    override fun getOutline(view: View, outline: Outline) {
+      outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
+    }
+  }
+
+  @ReactPropGroup(names = ["width", "height", "borderRadius"], customType = "Style")
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
     val density = reactContext.resources.displayMetrics.density
 
+    fun setBorderRadius(radius: Int) {
+      view.outlineProvider = OutlineProvider(radius)
+      view.clipToOutline = true
+    }
+
     fun pixelsToDpi(pixels: Int): Int {
-      return (pixels * density).roundToInt()
+      return ceil(pixels * density).toInt()
     }
 
     if (index == 0) propWidth = pixelsToDpi(value)
     if (index == 1) propHeight = pixelsToDpi(value)
+    if (index == 2) setBorderRadius(pixelsToDpi(value))
   }
 
 
