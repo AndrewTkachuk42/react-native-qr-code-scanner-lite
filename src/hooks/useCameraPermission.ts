@@ -7,7 +7,7 @@ import {
 } from '../services/permission';
 import { IS_ANDROID } from '../constants/constants';
 
-export const useCameraPermission = () => {
+export const useCameraPermission = (autoCheck: boolean = true) => {
   const [isGranted, setIsGranted] = useState(false);
 
   const isPermissionRequsted = useRef(false);
@@ -37,8 +37,12 @@ export const useCameraPermission = () => {
   }, [isGranted, requestPermission]);
 
   useEffect(() => {
+    if (!autoCheck) {
+      return;
+    }
+
     checkPermission();
-  }, [checkPermission]);
+  }, [autoCheck, checkPermission]);
 
   return { isGranted, checkPermission, requestPermission };
 };
