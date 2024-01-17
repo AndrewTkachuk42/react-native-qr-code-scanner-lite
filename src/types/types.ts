@@ -1,20 +1,23 @@
-import {
-  type HostComponent,
-  type ViewProps,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
+import { type HostComponent } from 'react-native';
+
+export type Style = {
+  width?: number;
+  height?: number;
+  borderRadius?: number;
+  overflow?: string;
+};
 
 export type QrCodeScannerLiteComponentProps = {
   onQrCodeScanned: (args: any) => any;
   onError?: (args: any) => any;
-  style?: StyleProp<ViewStyle>;
+  style?: Style;
 };
 
 export type QrCodeScannerLiteViewType =
   HostComponent<QrCodeScannerLiteComponentProps>;
 
-type QrCodeScannerLiteProps = QrCodeScannerLiteComponentProps &
-  ViewProps & { scannerRef?: React.MutableRefObject<null> };
+type QrCodeScannerLiteProps = QrCodeScannerLiteComponentProps & {
+  scannerRef?: React.MutableRefObject<null>;
+};
 
 export type QrCodeScannerType = (props: QrCodeScannerLiteProps) => JSX.Element;

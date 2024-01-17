@@ -8,6 +8,9 @@ export enum COMMAND {
 
 export const WINDOW_WIDTH = Dimensions.get('window').width;
 
+const PADDING = 16;
+export const CAMERA_SIZE = WINDOW_WIDTH - PADDING * 2;
+
 export const IS_ANDROID = Platform.OS === 'android';
 
 export const COMPONENT_NAME = IS_ANDROID

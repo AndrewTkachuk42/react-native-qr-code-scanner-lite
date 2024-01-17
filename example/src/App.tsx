@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { QrCodeScanner } from 'react-native-qr-code-scanner-lite';
 
 import { useApp } from './useApp';
 import Buttons from './Buttons';
+import { CAMERA_SIZE } from '../../src/constants/constants';
 
 const QrData = ({ qrData }: { qrData: string | null }) => {
   if (!qrData) {
@@ -22,19 +23,20 @@ export default function App() {
     useApp();
 
   return (
-    <View style={styles.container}>
-      <View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.cameraWrapper}>
         <QrCodeScanner
           scannerRef={scannerRef}
           onQrCodeScanned={onQrCodeScanned}
           onError={onError}
+          style={styles.camera}
         />
         <QrData qrData={qrData} />
       </View>
 
       <Buttons resume={resume} pause={pause} />
       <Text style={styles.error}>{error}</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -42,6 +44,16 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flex: 1,
+  },
+  cameraWrapper: {
+    margin: 16,
+    backgroundColor: '#fff',
+    borderRadius: 32,
+    overflow: 'hidden',
+  },
+  camera: {
+    width: CAMERA_SIZE,
+    height: CAMERA_SIZE,
   },
   error: {
     fontSize: 24,
