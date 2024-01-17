@@ -28,21 +28,28 @@ export const useCameraPermission = (autoCheck: boolean = true) => {
     return result;
   }, []);
 
-  useEffect(() => {
-    if (isGranted || isPermissionRequsted.current || !IS_ANDROID) {
+  const checkAndRequestPermission = useCallback(async () => {
+    const result = await checkPermission();
+
+    if (result || isPermissionRequsted.current || !IS_ANDROID) {
       return;
     }
 
     requestPermission();
-  }, [isGranted, requestPermission]);
+  }, [checkPermission, requestPermission]);
 
   useEffect(() => {
     if (!autoCheck) {
       return;
     }
 
-    checkPermission();
-  }, [autoCheck, checkPermission]);
+    checkAndRequestPermission();
+  }, [autoCheck, checkAndRequestPermission]);
 
-  return { isGranted, checkPermission, requestPermission };
+  return {
+    isGranted,
+    checkPermission,
+    requestPermission,
+    checkAndRequestPermission,
+  };
 };
