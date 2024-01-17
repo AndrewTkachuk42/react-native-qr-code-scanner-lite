@@ -1,6 +1,6 @@
 {
   "name": "react-native-qr-code-scanner-lite",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "QR code scanner",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
