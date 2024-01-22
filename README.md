@@ -70,7 +70,8 @@ const App = () => {
 import { QrCodeScanner, useQrCodeScanner, useCameraPermission } from "react-native-qr-code-scanner-lite";
 
 const App = () => {
-  useCameraPermission(); // or const {isGranted} = useCameraPermission()
+  useCameraPermission(); // or const { isGranted, checkPermission, requestPermission } =
+    // useCameraPermission();
 
   const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
