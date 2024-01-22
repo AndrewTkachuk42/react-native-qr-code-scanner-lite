@@ -6,6 +6,7 @@ import {
 
 export const useApp = () => {
   useCameraPermission();
+
   const { scannerRef, resumeScan, pauseScan } = useQrCodeScanner();
 
   const [qrData, setQrData] = useState(null);

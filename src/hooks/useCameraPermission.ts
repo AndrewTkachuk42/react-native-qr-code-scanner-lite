@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   checkPermission as checkPermissionService,
   requestPermission as requestPermissionService,
 } from '../services/permission';
-import { IS_ANDROID } from '../constants/constants';
+import { useOnAppStateActive } from './useOnAppActive';
 
 export const useCameraPermission = (autoCheck: boolean = true) => {
   const [isGranted, setIsGranted] = useState(false);
-
-  const isPermissionRequsted = useRef(false);
 
   const checkPermission = useCallback(async () => {
     const result = await checkPermissionService();
@@ -21,9 +18,8 @@ export const useCameraPermission = (autoCheck: boolean = true) => {
 
   const requestPermission = useCallback(async () => {
     const result = await requestPermissionService();
-    isPermissionRequsted.current = true;
 
-    setIsGranted(result === PermissionsAndroid.RESULTS.GRANTED);
+    setIsGranted(result);
 
     return result;
   }, []);
@@ -31,14 +27,17 @@ export const useCameraPermission = (autoCheck: boolean = true) => {
   const checkAndRequestPermission = useCallback(async () => {
     const result = await checkPermission();
 
-    if (result || isPermissionRequsted.current || !IS_ANDROID) {
-      return;
+    if (result) {
+      return result;
     }
 
-    requestPermission();
+    return requestPermission();
   }, [checkPermission, requestPermission]);
 
+  useOnAppStateActive(checkPermission); // Refresh permission when app state changes to "active", as user might have allowed it in Settings
+
   useEffect(() => {
+    // This effect checks permission on mount if autoCheck prop !== false
     if (!autoCheck) {
       return;
     }

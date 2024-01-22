@@ -1,31 +1,22 @@
 import { PermissionsAndroid, NativeModules } from 'react-native';
 
-import { IS_ANDROID } from '../constants/constants';
+import { IS_ANDROID, PERMISSION_GRANTED } from '../constants/constants';
 
-const checkAndroidPermission = () => {
-  const permission = PermissionsAndroid.PERMISSIONS.CAMERA;
+const checkAndroidPermission = (): Promise<boolean> =>
+  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA!);
 
-  if (!permission) {
-    return false;
-  }
-
-  return PermissionsAndroid.check(permission);
-};
-
-const checkIosPermission = () =>
+const checkIosPermission = (): Promise<boolean> =>
   NativeModules.QrCodeScannerLiteViewManager.checkPermission();
 
-const requestAndroidPermission = () => {
-  const permission = PermissionsAndroid.PERMISSIONS.CAMERA;
+const requestAndroidPermission = async (): Promise<boolean> => {
+  const status = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.CAMERA!
+  );
 
-  if (!permission) {
-    return false;
-  }
-
-  return PermissionsAndroid.request(permission);
+  return status === PERMISSION_GRANTED;
 };
 
-const requestIosPermission = () =>
+const requestIosPermission = (): Promise<boolean> =>
   NativeModules.QrCodeScannerLiteViewManager.requestPermission();
 
 export const checkPermission = IS_ANDROID

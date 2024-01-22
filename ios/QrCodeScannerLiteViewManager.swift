@@ -36,13 +36,13 @@ class QrCodeScannerLiteViewManager: RCTViewManager {
         viewController.pause()
     }
     
-    @objc(checkPermission:rejecter:)
+    @objc
     func checkPermission(_ resolve: RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
         let isAuthorized = AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized
         resolve(isAuthorized)
     }
     
-    @objc(requestPermission:rejecter:)
+    @objc
     func requestPermission(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject:RCTPromiseRejectBlock) -> Void {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
             if granted {
@@ -52,7 +52,6 @@ class QrCodeScannerLiteViewManager: RCTViewManager {
             }
         })
     }
-    
     
     
     @objc override static func requiresMainQueueSetup() -> Bool {
