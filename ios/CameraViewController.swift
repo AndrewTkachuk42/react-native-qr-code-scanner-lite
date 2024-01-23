@@ -17,6 +17,7 @@ class PreviewView: UIView {
     
     convenience init() {
         self.init(frame: UIScreen.main.bounds)
+        self.alpha = 0
     }
     
     override func reactSetFrame(_ frame: CGRect)
@@ -25,6 +26,10 @@ class PreviewView: UIView {
         
         let rect = CGRectMake(0, 0, frame.width, frame.height)
         parentViewController?.setupPreview(frame: rect)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.fadeIn(0.5)
+        }
     }
 }
 
@@ -175,4 +180,22 @@ extension CameraViewController: AVCaptureMetadataOutputObjectsDelegate {
             found(codeObject: readableObject)
         }
     }
+}
+
+extension UIView {
+  func fadeTo(_ alpha: CGFloat, duration: TimeInterval = 0.3) {
+    DispatchQueue.main.async {
+      UIView.animate(withDuration: duration) {
+        self.alpha = alpha
+      }
+    }
+  }
+
+  func fadeIn(_ duration: TimeInterval = 0.3) {
+    fadeTo(1.0, duration: duration)
+  }
+
+  func fadeOut(_ duration: TimeInterval = 0.3) {
+    fadeTo(0.0, duration: duration)
+  }
 }

@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import com.google.common.util.concurrent.ListenableFuture
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableMap
@@ -44,6 +46,7 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
   ): CameraPreviewLayout {
     super.onCreateView(inflater, container, savedInstanceState)
     cameraPreviewLayout = CameraPreviewLayout(requireNotNull(context))
+    cameraPreviewLayout.previewView.alpha = 0F
 
     events = Events(reactContext, id)
     return cameraPreviewLayout
@@ -69,6 +72,8 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
     processCameraProviderFuture.addListener({
       processCameraProvider = processCameraProviderFuture.get()
       bindCamera()
+
+      cameraPreviewLayout.previewView.animate().alpha(1f).setDuration(500).startDelay = 500
     }, ContextCompat.getMainExecutor(requireNotNull(context)))
   }
 
@@ -78,8 +83,11 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
 
     processCameraProviderFuture = ProcessCameraProvider.getInstance(requireNotNull(context))
 
+    val resolutionSelector = ResolutionSelector.Builder().setResolutionStrategy(ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY).build()
+
     cameraPreview = Preview.Builder()
       .setTargetRotation(cameraPreviewLayout.previewView.display.rotation)
+      .setResolutionSelector(resolutionSelector)
       .build()
 
     cameraPreview.setSurfaceProvider(cameraPreviewLayout.previewView.surfaceProvider)
@@ -139,7 +147,9 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
     }
 
     try {
-      processCameraProvider.bindToLifecycle(this, cameraSelector, cameraPreview, imageAnalysis)
+      val camera = processCameraProvider.bindToLifecycle(this, cameraSelector, cameraPreview, imageAnalysis)
+      camera.cameraControl.setLinearZoom(0f)
+
       isScanning = true
     } catch (error: Throwable) {
       events.sendInitializationError(error.message)

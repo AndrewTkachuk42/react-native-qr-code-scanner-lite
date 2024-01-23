@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   cameraWrapper: {
     margin: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     borderRadius: 32,
     overflow: 'hidden',
   },
