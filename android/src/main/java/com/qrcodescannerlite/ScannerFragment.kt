@@ -46,7 +46,6 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
   ): CameraPreviewLayout {
     super.onCreateView(inflater, container, savedInstanceState)
     cameraPreviewLayout = CameraPreviewLayout(requireNotNull(context))
-    cameraPreviewLayout.previewView.alpha = 0F
 
     events = Events(reactContext, id)
     return cameraPreviewLayout
@@ -73,7 +72,6 @@ class ScannerFragment(private val reactContext: ReactApplicationContext) : Fragm
       processCameraProvider = processCameraProviderFuture.get()
       bindCamera()
 
-      cameraPreviewLayout.previewView.animate().alpha(1f).setDuration(500).startDelay = 500
     }, ContextCompat.getMainExecutor(requireNotNull(context)))
   }
 

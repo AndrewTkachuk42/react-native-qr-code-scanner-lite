@@ -12,5 +12,6 @@ RCT_EXTERN_METHOD(requestPermission:
                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXPORT_VIEW_PROPERTY(onQrCodeScanned, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onError, RCTDirectEventBlock)
 
 @end
